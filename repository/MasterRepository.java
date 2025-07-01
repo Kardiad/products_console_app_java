@@ -6,17 +6,22 @@ import interfaces.CRUDInterface;
 import managers.InvoiceManager;
 import managers.LinesManager;
 import managers.ProductsManager;
+import java.util.HashMap;
 
 public class MasterRepository {
 
-    private LinesManager linesManager;
-    private ProductsManager productsManager;
-    private InvoiceManager invoiceManager;
+    private final HashMap<String, CRUDInterface> managers;
+    private final String[] repositories = {
+            ManagersNames.PRODUCTS.toString(),
+            ManagersNames.LINES.toString(),
+            ManagersNames.INVOICES.toString()
+    };
 
     public MasterRepository(){
-        this.linesManager = new LinesManager();
-        this.productsManager = new ProductsManager();
-        this.invoiceManager = new InvoiceManager();
+        managers = new HashMap<>();
+        this.managers.put(this.repositories[0], new ProductsManager());
+        this.managers.put(this.repositories[1], new LinesManager());
+        this.managers.put(this.repositories[2], new InvoiceManager());
     }
 
     private Object createIdProduct(CRUDInterface manager, ScanMiddleware scanMiddleware){
@@ -55,26 +60,18 @@ public class MasterRepository {
     }
 
     public CRUDInterface getManager(String manager){
-        if(manager.equalsIgnoreCase(ManagersNames.PRODUCTS.toString())){
-            return this.productsManager;
-        }
-        if(manager.equalsIgnoreCase(ManagersNames.LINES.toString())){
-            return this.linesManager;
-        }
-        if(manager.equalsIgnoreCase(ManagersNames.INVOICES.toString())){
-            return this.invoiceManager;
+        for(String singleManager: this.repositories){
+            if(singleManager.equalsIgnoreCase(manager)){
+                return this.managers.get(manager);
+            }
         }
         return null;
     }
     public void setManager(String managerName, CRUDInterface manager){
-        if(managerName.equalsIgnoreCase(ManagersNames.PRODUCTS.toString())){
-            this.productsManager = (ProductsManager) manager;
-        }
-        if(managerName.equalsIgnoreCase(ManagersNames.LINES.toString())){
-            this.linesManager = (LinesManager) manager;
-        }
-        if(managerName.equalsIgnoreCase(ManagersNames.INVOICES.toString())){
-            this.invoiceManager = (InvoiceManager) manager;
+        for(String singleManager: this.repositories){
+            if(singleManager.equalsIgnoreCase(managerName)){
+                this.managers.put(managerName, manager);
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package controllers;
 
+import consts.ManagersNames;
 import managers.ProductsManager;
 import repository.MasterRepository;
 import core.ScanMiddleware;
@@ -9,7 +10,7 @@ import interfaces.MenuStrategy;
 public class ProductMenuStrategy implements MenuStrategy {
 
     private boolean runnable;
-    private final static String VALIDATE = "product";
+    private final static String VALIDATE = ManagersNames.PRODUCTS.toString();
 
     public ProductMenuStrategy(String strategy){
         this.runnable = strategy.equalsIgnoreCase(VALIDATE);

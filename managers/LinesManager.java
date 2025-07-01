@@ -1,5 +1,6 @@
 package managers;
 
+import business.BussinessLines;
 import core.ScanMiddleware;
 import consts.LinesStatus;
 import consts.ManagersNames;
@@ -12,14 +13,12 @@ import java.util.ArrayList;
 
 public class LinesManager implements CRUDInterface {
 
-    private static LinesManager manager;
-    private ArrayList<Lines> lines;
+    private final ArrayList<Lines> lines;
+    private final BussinessLines bussinessLines;
 
     public LinesManager(){
-        if(manager == null){
-            manager = new LinesManager();
-            this.lines = new ArrayList<>();
-        }
+        this.lines = new ArrayList<>();
+        this.bussinessLines = new BussinessLines();
     }
 
     @Override
@@ -87,37 +86,20 @@ public class LinesManager implements CRUDInterface {
 
     @Override
     public Object dataAccessById(ScanMiddleware scanMiddleware, MasterRepository repository){
-        System.out.println("Insert the id of line");
-        int id = scanMiddleware.writePositiveInt();
-        return new Lines(id, new Products(), 0,  0.0, null);
+        return this.bussinessLines.finderById(scanMiddleware, repository);
     }
 
     @Override
     public Object dataAccessObject(ScanMiddleware scanMiddleware, MasterRepository repository){
-        System.out.println("Insert the next data to find line [id,quantity,status]");
-        int id = scanMiddleware.writePositiveInt();
-        int quantity = scanMiddleware.writePositiveInt();
-        LinesStatus status = scanMiddleware.writeLineStatus();
-        System.out.println("If you want to search by product, you can write the data");
-        Products filter = (Products) repository
-                .getManager(ManagersNames.PRODUCTS.toString())
-                .dataAccessObject(scanMiddleware, repository);
-        Products products = (Products) repository
-                .getManager(ManagersNames.PRODUCTS.toString())
-                .findOneBy(filter, repository);
-        return new Lines(id, products, quantity, products.getPricePerUnit() * quantity, status);
+       return this.bussinessLines.finder(scanMiddleware, repository);
     }
 
     @Override
     public Object dataAccessObjectAutoIncrement(ScanMiddleware scanMiddleware, MasterRepository repository){
-        System.out.println("To create a line you need to insert ['quantity', 'Product']");
-        int quantity = scanMiddleware.writePositiveInt();
-        Products filter = (Products) repository
-                .getManager(ManagersNames.PRODUCTS.toString())
-                .dataAccessObject(scanMiddleware, repository);
-        Products products = (Products) repository
-                .getManager(ManagersNames.PRODUCTS.toString())
-                .findOneBy(filter, repository);
-        return new Lines(this.lines.size()+1, products, quantity, products.getPricePerUnit() * quantity, LinesStatus.ACTIVE);
+       return this.bussinessLines.createItem(scanMiddleware, repository);
+    }
+
+    public int getLastId(){
+        return this.lines.size()+1;
     }
 }

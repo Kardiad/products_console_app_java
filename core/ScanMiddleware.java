@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class ScanMiddleware {
 
-    private Scanner scanner;
+    private final Scanner scanner;
 
     public ScanMiddleware(){
         this.scanner = new Scanner(System.in);

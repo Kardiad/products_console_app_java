@@ -1,5 +1,6 @@
 package controllers;
 
+import consts.ManagersNames;
 import managers.LinesManager;
 import repository.MasterRepository;
 import core.ScanMiddleware;
@@ -8,7 +9,7 @@ import interfaces.MenuStrategy;
 
 public class LineMenuStrategy implements MenuStrategy {
     private boolean runnable;
-    private final static String VALIDATE = "lines";
+    private final static String VALIDATE = ManagersNames.LINES.toString();
 
     public LineMenuStrategy(String strategy){
         this.runnable =  strategy.equalsIgnoreCase(VALIDATE);

@@ -1,5 +1,6 @@
 package managers;
 
+import business.BussinessProduct;
 import core.ScanMiddleware;
 import entities.Products;
 import consts.ProductStatus;
@@ -10,46 +11,34 @@ import java.util.ArrayList;
 
 public class ProductsManager implements CRUDInterface {
 
-    private static ProductsManager manager;
-    private ArrayList<Products> products;
+    private final ArrayList<Products>  products;
+    private final BussinessProduct bussinessProduct;
 
     public ProductsManager(){
-        if(this.manager == null){
-            this.products = new ArrayList<Products>();
-        }
+        this.products = new ArrayList<>();
+        this.bussinessProduct = new BussinessProduct();
     }
 
     @Override
     public Object dataAccessById(ScanMiddleware scanMiddleware, MasterRepository repository){
         System.out.println("Insert the id of product");
-        int id = scanMiddleware.writePositiveInt();
-        return new Products(id, "", "", null, 0.0);
+
+        return bussinessProduct.finderById(scanMiddleware, repository);
     }
 
     @Override
     public Object dataAccessObject(ScanMiddleware scanMiddleware, MasterRepository repository){
-        System.out.println("Insert the next data to find product [id,name,brand,status,price]");
-        int id = scanMiddleware.writePositiveInt();
-        String name = scanMiddleware.writeString();
-        String brand = scanMiddleware.writeString();
-        scanMiddleware.writeString();
-        ProductStatus status = scanMiddleware.writeProductStatus();
-        double pricePerUnit = scanMiddleware.writeDouble();
-        return new Products(id, name, brand, status, pricePerUnit);
+        return bussinessProduct.finder(scanMiddleware, repository);
     }
 
     @Override
     public Object dataAccessObjectAutoIncrement(ScanMiddleware scanMiddleware, MasterRepository repository){
-        System.out.println("To create a product you need to insert ['name', 'brand', 'price']");
-        String name = scanMiddleware.writeString();
-        String brand = scanMiddleware.writeString();
-        double pricePerUnit = scanMiddleware.writeDouble();
-        return new Products(this.products.size()+1, name, brand, ProductStatus.ACTIVE, pricePerUnit);
+        return this.bussinessProduct.createItem(scanMiddleware, repository);
     }
 
     @Override
     public ArrayList<Products> findAll() {
-        return (ArrayList<Products>) this.products;
+        return this.products;
     }
 
     @Override
@@ -108,5 +97,9 @@ public class ProductsManager implements CRUDInterface {
                 break;
             }
         }
+    }
+
+    public int getLastId(){
+        return this.products.size()+1;
     }
 }

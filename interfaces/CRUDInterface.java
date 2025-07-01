@@ -15,5 +15,4 @@ public interface CRUDInterface {
     public Object dataAccessObject(ScanMiddleware scanMiddleware, MasterRepository repository);
     public Object dataAccessObjectAutoIncrement(ScanMiddleware scanMiddleware, MasterRepository repository);
     public Object dataAccessById(ScanMiddleware scanMiddleware, MasterRepository repository);
-    //TODO we need to create: an assignate method, delete asignation, update asignation and find asignation
 }
