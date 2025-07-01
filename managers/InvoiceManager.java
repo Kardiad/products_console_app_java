@@ -18,23 +18,23 @@ public class InvoiceManager implements CRUDInterface {
     }
 
     @Override
-    public void create(Object item, MasterRepository repository) {
-
+    public CRUDInterface create(Object item, MasterRepository repository) {
+        return null;
     }
 
     @Override
-    public void delete(Object item, MasterRepository repository) {
-
+    public CRUDInterface delete(Object item, MasterRepository repository) {
+        return null;
     }
 
     @Override
-    public void patch(Object item, Object itemId, MasterRepository repository) {
-
+    public CRUDInterface patch(Object item, Object itemId, MasterRepository repository) {
+        return null;
     }
 
     @Override
-    public void put(Object item, Object itemId, MasterRepository repository) {
-
+    public CRUDInterface put(Object item, Object itemId, MasterRepository repository) {
+        return null;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package controllers;
 
+import business.BussinessProduct;
 import consts.ManagersNames;
 import managers.ProductsManager;
 import repository.MasterRepository;
@@ -11,9 +12,12 @@ public class ProductMenuStrategy implements MenuStrategy {
 
     private boolean runnable;
     private final static String VALIDATE = ManagersNames.PRODUCTS.toString();
+    private final BussinessProduct bussinessProduct;
 
     public ProductMenuStrategy(String strategy){
+
         this.runnable = strategy.equalsIgnoreCase(VALIDATE);
+        this.bussinessProduct = new BussinessProduct();
     }
 
     @Override
@@ -41,26 +45,25 @@ public class ProductMenuStrategy implements MenuStrategy {
 
     private void actionProducts(int status, ScanMiddleware scanMiddleware, MasterRepository masterRepository){
         scanMiddleware.writeString(); // this one is for clean the buffer
-        ProductsManager productsManager = (ProductsManager) masterRepository.getManager(VALIDATE);
         if(status == AppStatus.INSERT.getStatus()){
-            masterRepository.setManager(VALIDATE, (ProductsManager) masterRepository.create(productsManager, scanMiddleware));
+            this.bussinessProduct.create(scanMiddleware, masterRepository);
             System.out.println(VALIDATE+" created!");
         }
         if(status == AppStatus.LIST.getStatus()){
             System.out.println("This is your "+VALIDATE+" list");
-            masterRepository.list(productsManager);
+            this.bussinessProduct.list(scanMiddleware, masterRepository);
         }
         if(status == AppStatus.FIND.getStatus()){
             System.out.println("Find your "+VALIDATE);
-            masterRepository.showOne(productsManager, scanMiddleware);
+            this.bussinessProduct.findOne(scanMiddleware, masterRepository);
         }
         if(status == AppStatus.DELETE.getStatus()){
             System.out.println("Delete your "+VALIDATE);
-            masterRepository.setManager(VALIDATE, (ProductsManager) masterRepository.deleteById(productsManager, scanMiddleware));
+            this.bussinessProduct.delete(scanMiddleware, masterRepository);
         }
         if(status == AppStatus.UPDATE.getStatus()){
             System.out.println("Update your "+VALIDATE);
-            masterRepository.setManager(VALIDATE, (ProductsManager) masterRepository.update(productsManager, scanMiddleware));
+            this.bussinessProduct.update(scanMiddleware, masterRepository);
         }
     }
 }

@@ -8,8 +8,11 @@ import interfaces.BussinessInterface;
 import managers.ProductsManager;
 import repository.MasterRepository;
 
+import java.util.ArrayList;
+
 public class BussinessProduct implements BussinessInterface {
 
+    //@TODO implements valueobjects in every params, to make easer everything
 
     @Override
     public Object finder(ScanMiddleware scan, MasterRepository repository) {
@@ -25,7 +28,7 @@ public class BussinessProduct implements BussinessInterface {
 
     @Override
     public Object finderById(ScanMiddleware scan, MasterRepository repository) {
-        System.out.println("Insert id to find product");
+        System.out.println("Insert the [id] of product");
         int id = scan.writePositiveInt();
         return new Products(id, "", "", ProductStatus.HIDDEN, 0);
     }
@@ -38,5 +41,71 @@ public class BussinessProduct implements BussinessInterface {
         double pricePerUnit = scan.writeDouble();
         int lastId = ((ProductsManager)repository.getManager(ManagersNames.PRODUCTS.toString())).getLastId();
         return new Products(lastId, name, brand, ProductStatus.ACTIVE, pricePerUnit);
+    }
+
+    @Override
+    public void update(ScanMiddleware scan, MasterRepository repository) {
+        repository.setManager(ManagersNames.PRODUCTS.toString(), repository
+                .getManager(ManagersNames.PRODUCTS.toString())
+                .patch(
+                        this.finder(scan, repository),
+                        this.finderById(scan, repository),
+                        repository
+                ));
+    }
+
+    @Override
+    public void create(ScanMiddleware scan, MasterRepository repository) {
+        repository.setManager(ManagersNames.PRODUCTS.toString(), repository
+                .getManager(ManagersNames.PRODUCTS.toString())
+                .create(
+                        this.createItem(scan, repository),
+                        repository
+                ));
+    }
+
+    @Override
+    public void delete(ScanMiddleware scan, MasterRepository repository) {
+        repository.setManager(ManagersNames.PRODUCTS.toString(), repository
+                .getManager(ManagersNames.PRODUCTS.toString())
+                .delete(
+                        this.finderById(scan, repository),
+                        repository
+                ));
+    }
+
+    @Override
+    public void list(ScanMiddleware scan, MasterRepository repository) {
+        ArrayList<?> products = repository.getManager(ManagersNames.PRODUCTS.toString()).findAll();
+        for(Object p : products){
+            System.out.println((Products) p);
+        }
+
+    }
+
+    @Override
+    public void findOne(ScanMiddleware scan, MasterRepository repository) {
+        Products p = (Products) repository
+                .getManager(
+                        ManagersNames.PRODUCTS.toString()
+                )
+                .findOneBy(
+                        this.finder(scan,repository),
+                        repository
+                );
+        System.out.println(p);
+    }
+
+    @Override
+    public void findOneById(ScanMiddleware scan, MasterRepository repository) {
+        Products p = (Products) repository
+                .getManager(
+                        ManagersNames.PRODUCTS.toString()
+                )
+                .findOneBy(
+                        this.finderById(scan,repository),
+                        repository
+                );
+        System.out.println(p);
     }
 }

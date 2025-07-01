@@ -39,7 +39,7 @@ public class MenuClass {
 
     private void welcome(){
         System.out.println("Hello! we are making invoices please select your option");
-        System.out.println("Write: [product] to make some products");
+        System.out.println("Write: [products] to make some products");
         System.out.println("Write: [lines] to make a product line of your invoice, remember is required to have some products");
         System.out.println("Write: [invoices] to make a invoice, remember is required to have some lines to make some invoices");
     }

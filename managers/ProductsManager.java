@@ -3,7 +3,6 @@ package managers;
 import business.BussinessProduct;
 import core.ScanMiddleware;
 import entities.Products;
-import consts.ProductStatus;
 import interfaces.CRUDInterface;
 import repository.MasterRepository;
 
@@ -21,8 +20,6 @@ public class ProductsManager implements CRUDInterface {
 
     @Override
     public Object dataAccessById(ScanMiddleware scanMiddleware, MasterRepository repository){
-        System.out.println("Insert the id of product");
-
         return bussinessProduct.finderById(scanMiddleware, repository);
     }
 
@@ -53,18 +50,20 @@ public class ProductsManager implements CRUDInterface {
     }
 
     @Override
-    public void create(Object product, MasterRepository repository) {
+    public CRUDInterface create(Object product, MasterRepository repository) {
         this.products.add((Products) product);
+        return this;
     }
 
     @Override
-    public void delete(Object item, MasterRepository repository) {
+    public CRUDInterface delete(Object item, MasterRepository repository) {
         Products castProduct = (Products) item;
         this.products.removeIf(p -> p.equals(castProduct));
+        return this;
     }
 
     @Override
-    public void patch(Object item, Object itemId, MasterRepository repository) {
+    public CRUDInterface patch(Object item, Object itemId, MasterRepository repository) {
         Products castedObject = (Products) item;
         for(Products p : this.products){
             if(p.equals(itemId)){
@@ -75,10 +74,11 @@ public class ProductsManager implements CRUDInterface {
                 break;
             }
         }
+        return this;
     }
 
     @Override
-    public void put(Object item, Object itemId, MasterRepository repository) {
+    public CRUDInterface put(Object item, Object itemId, MasterRepository repository) {
         Products castedObject = (Products) item;
         Products itemCasted = (Products) itemId;
         for (Products p : this.products){
@@ -97,6 +97,7 @@ public class ProductsManager implements CRUDInterface {
                 break;
             }
         }
+        return this;
     }
 
     public int getLastId(){

@@ -2,10 +2,7 @@ package managers;
 
 import business.BussinessLines;
 import core.ScanMiddleware;
-import consts.LinesStatus;
-import consts.ManagersNames;
 import entities.Lines;
-import entities.Products;
 import interfaces.CRUDInterface;
 import repository.MasterRepository;
 
@@ -38,18 +35,20 @@ public class LinesManager implements CRUDInterface {
     }
 
     @Override
-    public void create(Object product, MasterRepository repository) {
+    public CRUDInterface create(Object product, MasterRepository repository) {
         this.lines.add((Lines) product);
+        return this;
     }
 
     @Override
-    public void delete(Object item, MasterRepository repository) {
+    public CRUDInterface delete(Object item, MasterRepository repository) {
         Lines castProduct = (Lines) item;
         this.lines.removeIf(p -> p.equals(castProduct));
+        return this;
     }
 
     @Override
-    public void patch(Object item, Object itemId, MasterRepository repository) {
+    public CRUDInterface patch(Object item, Object itemId, MasterRepository repository) {
         Lines castedObject = (Lines) item;
         for(Lines l : this.lines){
             if(l.equals(itemId)){
@@ -60,10 +59,11 @@ public class LinesManager implements CRUDInterface {
                 break;
             }
         }
+        return this;
     }
 
     @Override
-    public void put(Object item, Object itemId, MasterRepository repository) {
+    public CRUDInterface put(Object item, Object itemId, MasterRepository repository) {
         Lines castedObject = (Lines) item;
         Lines itemCasted = (Lines) itemId;
         for (Lines l : this.lines){
@@ -82,6 +82,7 @@ public class LinesManager implements CRUDInterface {
                 break;
             }
         }
+        return this;
     }
 
     @Override
