@@ -2,7 +2,6 @@ package controllers;
 
 import business.BussinessProduct;
 import consts.ManagersNames;
-import managers.ProductsManager;
 import repository.MasterRepository;
 import core.ScanMiddleware;
 import consts.AppStatus;

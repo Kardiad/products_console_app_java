@@ -24,8 +24,7 @@ public class MenuClass {
             this.welcome();
             strategy = this.scanMiddleware.writeString();
             //this one calls to one controller waiting a AppStatus command strategy is like /strategy/2 -> create product
-            new ProductMenuStrategy(strategy).run(this.scanMiddleware, this.actions);
-            new LineMenuStrategy(strategy).run(this.scanMiddleware, this.actions);
+            (new StrategyMenuResolver(strategy)).run(this.scanMiddleware, this.actions);
             System.out.println("Do you want to do something?(y/n)");
             yesOrNot = this.scanMiddleware.writeString();
             selectedStatus = (yesOrNot.equalsIgnoreCase(YES))?AppStatus.RETRY.getStatus():AppStatus.EXIT.getStatus();
